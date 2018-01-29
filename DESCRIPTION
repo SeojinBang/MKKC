@@ -1,0 +1,13 @@
+Package: MKKC
+Type: Package
+Title: Multiple Kernel K-means Clustering
+Version: 0.1.0
+Authors@R: person("Seo-Jin", "Bang", email = "seojinb@cs.cmu.edu", role = c("aut", "cre"))
+Description: Multple kernel K-means clustering that efficiently utilizes complementary information of multiple views in existance of noise and redundancy.
+License: GPL-3
+LazyData: TRUE
+Imports: Rmosek (>= 8.0.46), assertthat (>= 0.2.0), Rdpack, reshape, Matrix (>= 1.2-8)
+Depends: R (>= 3.3.1)
+Suggests: kernlab (>= 0.9-25)
+RoxygenNote: 6.0.1
+RdMacros: Rdpack
