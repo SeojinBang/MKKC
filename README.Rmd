@@ -2,6 +2,10 @@
 title: "MKKC Package"
 output: github_document
 bibliography: inst/REFERENCES.bib
+markdown: kramdown
+
+kramdown:
+  input: GFM
 ---
 
 ```{r setup, include=FALSE}
