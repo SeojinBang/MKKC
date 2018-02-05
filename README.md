@@ -106,7 +106,7 @@ dat2 <- kernelMatrix(rbf, dat2)   # kernel matrix from View 2
 Construct Multi-view Data
 -------------------------
 
-Centering and scaling of kernel matrices in multi-view learning allow multiple views comparable with each other. Hence, we recommand to standardize the kernel matrices before combining them. Each kernel matrix is centered by **K** ← **K** – **J**<sub>*n*</sub>**K** – **K****J**<sub>*n*</sub> + **J**<sub>*n*</sub>**K****J**<sub>*n*</sub> and scaled by **K** ← *n***K**/**t****r****(****K****)** where **J**<sub>*n*</sub> = **1**<sub>*n*</sub>**1**<sub>*n*</sub><sup>*T*</sup>/*n* and *n* is the number of samples.
+Centering and scaling of kernel matrices in multi-view learning allow multiple views comparable with each other. Hence, we recommand to standardize the kernel matrices before combining them. Each kernel matrix is centered by **K** ← **K** – **J**<sub>*n*</sub>**K** – **K****J**<sub>*n*</sub> + **J**<sub>*n*</sub>**K****J**<sub>*n*</sub> and scaled by **K** ← *n***K**/tr(**K**) where **J**<sub>*n*</sub> = **1**<sub>*n*</sub>**1**<sub>*n*</sub><sup>*T*</sup>/*n* and *n* is the number of samples.
 
 We standardize the kernel matrices using a function `StandardizeKernel` provided by **MKKC**. With the standarized kernel matrices, we construct a multi-view data as a 300 × 300 × 2 array.
 
@@ -135,31 +135,31 @@ print(res)
 ```
 
     ## 
-    ## Multiple kernel K-means clustering with 3 clusters of sizes  100, 104, 96 
+    ## Multiple kernel K-means clustering with 3 clusters of sizes  96, 104, 100 
     ## 
     ## Kernel coefficients of views:
     ## [1] 0.9342697 0.3565671
     ## 
     ## Clustering vector:
-    ##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-    ##  [36] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-    ##  [71] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2
-    ## [106] 2 3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
-    ## [141] 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 3 2 2
-    ## [176] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3
-    ## [211] 3 3 3 3 2 3 3 3 3 3 2 3 3 2 3 3 3 3 3 3 3 3 3 3 2 3 3 2 3 3 3 3 3 3 3
-    ## [246] 3 3 3 3 3 3 3 3 3 3 3 3 2 3 3 3 3 2 3 3 3 3 3 3 3 2 2 3 2 3 3 3 3 3 3
-    ## [281] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+    ##   [1] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+    ##  [36] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+    ##  [71] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 2 2 2 2
+    ## [106] 2 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [141] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 2
+    ## [176] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1
+    ## [211] 1 1 1 1 2 1 1 1 1 1 2 1 1 2 1 1 1 1 1 1 1 1 1 1 2 1 1 2 1 1 1 1 1 1 1
+    ## [246] 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 2 1 1 1 1 1 1 1 2 2 1 2 1 1 1 1 1 1
+    ## [281] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
     ## 
     ## Within cluster sum of squares by cluster:
     ##  cluster1  cluster2  cluster3 
-    ## 0.3279382 0.3437935 0.3158945 
+    ## 0.3158945 0.3437935 0.3279382 
     ## (between_SS / total_SS =   23.5  %)
     ## 
     ## Within cluster sum of squares by cluster for each view:
     ##        cluster1  cluster2  cluster3
-    ## view1 0.3068691 0.3291147 0.2917875
-    ## view2 0.1156576 0.1018366 0.1213974
+    ## view1 0.2917875 0.3291147 0.3068691
+    ## view2 0.1213974 0.1018366 0.1156576
     ## 
     ## Available components:
     ##  [1] "cluster"         "totss"           "withinss"       
