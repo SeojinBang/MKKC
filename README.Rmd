@@ -100,7 +100,7 @@ dat2 <- kernelMatrix(rbf, dat2)   # kernel matrix from View 2
 ```
 
 ## Construct Multi-view Data
-Centering and scaling of kernel matrices in multi-view learning allow multiple views comparable with each other. Hence, we recommand to standardize the kernel matrices before combining them. Each kernel matrix is centered by $\mathbf{K} \leftarrow \mathbf{K}\text{ -- }\mathbf{J}_n \mathbf{K}\text{ -- }\mathbf{K}\mathbf{J}_n + \mathbf{J}_n \mathbf{K}\mathbf{J}_n$ and scaled by $\mathbf{K} \leftarrow n\mathbf{K} / tr(\mathbf{K})$ where $\mathbf{J}_n = \mathbf{1}_n\mathbf{1}_n^T/n$ and $n$ is the number of samples.
+Centering and scaling of kernel matrices in multi-view learning allow multiple views comparable with each other. Hence, we recommand to standardize the kernel matrices before combining them. Each kernel matrix is centered by $\mathbf{K} \leftarrow \mathbf{K}\text{ -- }\mathbf{J}_n \mathbf{K}\text{ -- }\mathbf{KJ}_n + \mathbf{J}_n \mathbf{KJ}_n$ and scaled by $\mathbf{K} \leftarrow n\mathbf{K} / \mathbf{tr(K)}$ where $\mathbf{J}_n = \mathbf{1}_n\mathbf{1}_n^T/n$ and $n$ is the number of samples.
 
 We standardize the kernel matrices using a function `StandardizeKernel` provided by **MKKC**. With the standarized kernel matrices, we construct a multi-view data as a $300 \times 300 \times 2$ array. 
 
