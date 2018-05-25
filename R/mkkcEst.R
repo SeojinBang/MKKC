@@ -84,8 +84,12 @@ mkkcEst = function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-
     result <- mosek(problem, opts)
 
     # update theta
-    theta0 <- theta
-    theta <- result$sol$itr$xx[1:P]
+    if (iter == 1) {
+      theta0 <- theta
+    } else {
+      theta0 <- theta
+      theta <- result$sol$itr$xx[1:P]
+    }
 
     # update combined kernel matrix
     Ktheta <- matrix(0, nrow(Km), ncol(Km))
