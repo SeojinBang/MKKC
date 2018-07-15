@@ -86,9 +86,11 @@ mkkcEst = function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-
     # update theta
     if (iter == 1) {
       theta0 <- theta
+      cat("iter ", iter, "... theta ", theta, "\n")
     } else {
       theta0 <- theta
       theta <- result$sol$itr$xx[1:P]
+      cat("iter ", iter, "... theta ", theta, "\n")
     }
 
     # update combined kernel matrix
