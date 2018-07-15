@@ -102,7 +102,7 @@ mkkcEst = function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-
     H <- H.svd$vectors[, 1:centers] # normalized to unit length already
 
     # Break if converges
-    if (norm(theta0-theta, "2") < epsilon) {
+    if (norm(theta0-theta, "2") < epsilon & iter > 1) {
       break()
     }
 
