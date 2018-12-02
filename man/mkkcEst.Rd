@@ -4,7 +4,8 @@
 \alias{mkkcEst}
 \title{An internal function called \code{mkkcEst}.}
 \usage{
-mkkcEst(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04)
+mkkcEst(K, centers, iter.max = 10, A = NULL, bc = NULL,
+  epsilon = 1e-04, theta = rep(1/dim(Km)[3], dim(Km)[3]))
 }
 \arguments{
 \item{K}{\eqn{N x N x P} array containing \eqn{P} kernel matrices with size \eqn{N x N}.}
@@ -18,6 +19,8 @@ mkkcEst(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04)
 \item{bc}{Lower and upper constraint bounds.}
 
 \item{epsilon}{Convergence threshold. The default is \eqn{10^{-4}}.}
+
+\item{theta}{intial values for kernel coefficients. The default is 1/P for all views.}
 }
 \value{
 \code{mkkcEst} returns the following components:

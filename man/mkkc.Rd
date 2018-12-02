@@ -6,7 +6,8 @@
 \alias{print.MultipleKernelKmeans}
 \title{Multiple Kernel K-means Clustering}
 \usage{
-mkkc(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04)
+mkkc(K, centers, iter.max = 10, A = NULL, bc = NULL,
+  epsilon = 1e-04, theta = rep(1/dim(Km)[3], dim(Km)[3]))
 
 \method{print}{MultipleKernelKmeans}(x, ...)
 }
@@ -22,6 +23,8 @@ mkkc(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04)
 \item{bc}{\eqn{2 x m} numeric matrix with the two rows representing the lower and upper constraint bounds.}
 
 \item{epsilon}{Convergence threshold. The default is \eqn{10^{-4}}.}
+
+\item{theta}{intial values for kernel coefficients. The default is 1/P for all views.}
 
 \item{x}{Object of class inheriting from \code{mkkc}.}
 
