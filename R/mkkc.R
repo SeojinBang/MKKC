@@ -111,7 +111,7 @@ MultipleKernelKmeans.default <- function(K, centers, iter.max = 10, A = NULL, bc
     myA[,1:P] <- A
   }
 
-  state <- mkkcEst(K = K, centers = centers, iter.max = iter.max, A = myA, bc = bc, epsilon = epsilon)
+  state <- mkkcEst(K = K, centers = centers, iter.max = iter.max, A = myA, bc = bc, epsilon = epsilon, theta = theta)
   state$call <- match.call()
 
   class(state) <- "MultipleKernelKmeans"
