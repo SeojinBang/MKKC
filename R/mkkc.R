@@ -13,6 +13,7 @@
 #' @param A \eqn{m x P} linear constraint matrix where \eqn{P} is the number of views and \eqn{m} is the number of constrints.
 #' @param bc \eqn{2 x m} numeric matrix with the two rows representing the lower and upper constraint bounds.
 #' @param epsilon Convergence threshold. The default is \eqn{10^{-4}}.
+#' @param theta intial values for kernel coefficients. The default is 1/P for all views.
 #' @param x Object of class inheriting from \code{mkkc}.
 #' @param ... Additional arguments passed to \code{print}.
 #' @export
@@ -92,10 +93,10 @@
 #'
 #' coef(res) # kernel coefficients of the three views
 #' res$cluster
-mkkc <- function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04) UseMethod("MultipleKernelKmeans")
+mkkc <- function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04, theta = rep(1/dim(Km)[3], dim(Km)[3])) UseMethod("MultipleKernelKmeans")
 
 #' @export
-MultipleKernelKmeans.default <- function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04) {
+MultipleKernelKmeans.default <- function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04, theta = rep(1/dim(Km)[3], dim(Km)[3])) {
 
   assert_that(is.null(A) == is.null(bc), msg = "both A and bc should be assigned.")
 
