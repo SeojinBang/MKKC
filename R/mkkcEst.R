@@ -12,6 +12,7 @@
 #' @param A Linear constraint matrix.
 #' @param bc Lower and upper constraint bounds.
 #' @param epsilon Convergence threshold. The default is \eqn{10^{-4}}.
+#' @param theta intial values for kernel coefficients. The default is 1/P for all views.
 #' @return \code{mkkcEst} returns the following components:
 #' \describe{
 #'   \item{cluster}{A vector of integers (from \code{1:k}) indicating the cluster to which each point is allocated.}
@@ -31,7 +32,7 @@
 #' @import assertthat Rmosek
 #' @importFrom Matrix Matrix
 #' @importFrom stats kmeans
-mkkcEst = function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04) {
+mkkcEst = function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04, theta = rep(1/dim(Km)[3], dim(Km)[3])) {
 
   assert_that(centers > 0, msg = "the number of cluster should be an integer larger than 0.")
   assert_that(round(centers) == centers, msg = "the number of cluster should be an integer larger than 1.")
@@ -45,7 +46,7 @@ mkkcEst = function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-
   assert_that(is.numeric(P), msg = "K should have at least one view.")
 
   ## initialize theta
-  theta0 <- theta <- rep(1 / P, P)
+  theta0 <- theta
 
   ## initialize combined kernel matrix
   Ktheta <- matrix(0, nrow(Km), ncol(Km))
