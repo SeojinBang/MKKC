@@ -32,7 +32,7 @@
 #' @import assertthat Rmosek
 #' @importFrom Matrix Matrix
 #' @importFrom stats kmeans
-mkkcEst = function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04, theta = rep(1/dim(Km)[3], dim(Km)[3])) {
+mkkcEst = function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04, theta = rep(1/dim(K)[3], dim(K)[3])) {
 
   assert_that(centers > 0, msg = "the number of cluster should be an integer larger than 0.")
   assert_that(round(centers) == centers, msg = "the number of cluster should be an integer larger than 1.")

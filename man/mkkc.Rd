@@ -7,7 +7,7 @@
 \title{Multiple Kernel K-means Clustering}
 \usage{
 mkkc(K, centers, iter.max = 10, A = NULL, bc = NULL,
-  epsilon = 1e-04, theta = rep(1/dim(Km)[3], dim(Km)[3]))
+  epsilon = 1e-04, theta = rep(1/dim(K)[3], dim(K)[3]))
 
 \method{print}{MultipleKernelKmeans}(x, ...)
 }

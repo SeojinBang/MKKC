@@ -93,10 +93,10 @@
 #'
 #' coef(res) # kernel coefficients of the three views
 #' res$cluster
-mkkc <- function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04, theta = rep(1/dim(Km)[3], dim(Km)[3])) UseMethod("MultipleKernelKmeans")
+mkkc <- function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04, theta = rep(1/dim(K)[3], dim(K)[3])) UseMethod("MultipleKernelKmeans")
 
 #' @export
-MultipleKernelKmeans.default <- function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04, theta = rep(1/dim(Km)[3], dim(Km)[3])) {
+MultipleKernelKmeans.default <- function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04, theta = rep(1/dim(K)[3], dim(K)[3])) {
 
   assert_that(is.null(A) == is.null(bc), msg = "both A and bc should be assigned.")
 

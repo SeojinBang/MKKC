@@ -5,7 +5,7 @@
 \title{An internal function called \code{mkkcEst}.}
 \usage{
 mkkcEst(K, centers, iter.max = 10, A = NULL, bc = NULL,
-  epsilon = 1e-04, theta = rep(1/dim(Km)[3], dim(Km)[3]))
+  epsilon = 1e-04, theta = rep(1/dim(K)[3], dim(K)[3]))
 }
 \arguments{
 \item{K}{\eqn{N x N x P} array containing \eqn{P} kernel matrices with size \eqn{N x N}.}
