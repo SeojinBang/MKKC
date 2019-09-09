@@ -18,10 +18,6 @@ mkkc(K, centers, iter.max = 10, A = NULL, bc = NULL,
 
 \item{iter.max}{The maximum number of iterations allowed. The default is 10.}
 
-\item{A}{\eqn{m x P} linear constraint matrix where \eqn{P} is the number of views and \eqn{m} is the number of constrints.}
-
-\item{bc}{\eqn{2 x m} numeric matrix with the two rows representing the lower and upper constraint bounds.}
-
 \item{epsilon}{Convergence threshold. The default is \eqn{10^{-4}}.}
 
 \item{theta}{intial values for kernel coefficients. The default is 1/P for all views.}
@@ -43,6 +39,7 @@ mkkc(K, centers, iter.max = 10, A = NULL, bc = NULL,
   \item{tot.betweenss}{The between-cluster sum of squares, i.e. \code{totss-tot.withinss}.}
   \item{clustercount}{The number of clusters, say \code{k}.}
   \item{coefficients}{The kernel coefficients}
+  \item{H}{The continuous clustering assignment}
   \item{size}{The number of points, one component per cluster.}
   \item{iter}{The number of iterations.}
 }
@@ -53,10 +50,7 @@ Performs multiple kernel K-means clustering on a multi-view data.
 \details{
 The optimization problem is described with an array of the multiple
 kernels (\code{K}), the number of clusters (\code{centers}), and the linear
-constraint on the kernel coefficient (\eqn{\theta}). The constraint
-is defined as \eqn{blc \le A \theta \le buc} where the lower bound (\eqn{blc})
-is the first row of \code{bc} and the upper bound (\eqn{buc}) is the second row of
-\code{bc}.
+constraint on the kernel coefficient (\eqn{\theta}). 
 
 Our method put more weight on views having weak signal for cluster information so
 that we can utilize important, complementary information collected from all the

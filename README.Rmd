@@ -13,31 +13,29 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Overview 
-The **MKKC** package performs multiple kernel $k$-means clustering on a multi-view data. The method is suggested by suggested by @bang2018mkkc. The main function-`mkkc` efficiently and robustly utilizes complementary information collected from different sources and optimizes the kernel coefficients for different views in multiple kernel learning. This package also includes 18 multi-view simulation data generated for illustration purpose. We will give a short tutorial on using **MKKC** on the simulation data and assess how robustly it performs when noise and redundancy are present in the multi-view data.
+The **MKKC** package performs the robust multiple kernel $k$-means clustering using min-max optimization. The method is proposed by @bang2018mkkc. The main function-`mkkc` performs a robust clustering on multi-view data collected from different sources. This package also includes 18 multi-view simulation data generated for illustration purpose. We will give a short tutorial on using **MKKC** on the simulation data and assess how robustly it performs when noise and redundancy are present in the multi-view data.
 
 # Installation
 Users can install the package from [github](https://github.com/SeojinBang) as follows:
 ```r
 install.packages("devtools")
+library(devtools)
 devtools::install_github("SeojinBang/MKKC")
 ```
-A recent version of *Rmosek* (&gt;= 8.0.46) is also required. See the [Rmosek installation instructions](http://docs.mosek.com/8.0/rmosek/install.html) for details on installing for your platform.
 
 # Usage
 `mkkc` performs the multiple kernel K-means clustering on multi-view data. The usage is
 ```{r eval = FALSE}
-mkkc(K, centers, iter.max, A, bc, epsilon)
+mkkc(K, centers, iter.max, epsilon)
 ```
 where 
 
 * `K` is $N \times N \times P$ array containing $P$ kernel matrices with size $N \times N$.
 * `centers` is the number of clusters, say $k$.
 * `iter.max` is the maximum number of iterations allowed. The default is $10$.
-* `A` is $m \times P$ linear constraint matrix where P is the number of views and m is the number of constrints.
-* `bc` is $2 \times m$ numeric matrix with the two rows representing the lower and upper constraint bounds.
 * `epsilon` is a onvergence threshold. The default is $10^{-4}$.
 
-If there is no prior information to indicate relative importance of the views, one can perform the clustering analysis using the most basic call to `mkkc` without specifying `A` and `bc`:
+One can perform the clustering analysis using the most basic call to `mkkc`:
 ```{r eval = FALSE}
 mkkc(K, centers)
 ```
@@ -69,7 +67,7 @@ library(MKKC)
 
 ```{r views, result = 'hide', echo = FALSE}
 truelabel <- simBnoise$true.label
-n.noise <- 3                                    # number of noises to be added
+n.noise <- 2                                    # number of noises to be added
 dat1 <- simBnoise$view1[,c(1:(2 + n.noise))]    # view 1
 dat2 <- simBnoise$view2                         # view 2
 ```

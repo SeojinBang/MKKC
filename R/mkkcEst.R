@@ -25,6 +25,7 @@
 #'   \item{tot.betweenss}{The between-cluster sum of squares, i.e. \code{totss-tot.withinss}.}
 #'   \item{clustercount}{The number of clusters, say \code{k}.}
 #'   \item{coefficients}{The kernel coefficients}
+#'   \item{H}{The continuous clustering assignment}
 #'   \item{size}{The number of points, one component per cluster.}
 #'   \item{iter}{The number of iterations.}
 #' }
@@ -62,34 +63,13 @@ mkkcEst = function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-
   ## iteration start
   for (iter in 1:iter.max) {
 
-    # problem setting
-    problem <- list()
-    problem$sense <- "max"
-    problem$c <- c(sapply(1:P, function(m) WithinClusterSS(K = Km[,,m], H = H)), 0)
-    problem$A <- Matrix(0, ncol = P+1, byrow = T, sparse = TRUE)
-    problem$bc <- rbind(blc = c(0), buc =  c(0))
-    if (is.null(A)==FALSE & is.null(bc) == FALSE) {
-      problem$A <- A
-      problem$bc <- bc
-    }
-    assert_that(is.null(A) == is.null(bc), msg = "Error: both A and bc should be assigned.")
-    problem$bx <- rbind(blx = c(rep(0, P), 1),
-                        bux = c(rep(Inf, P), 1))
-    problem$cones <- cbind(list("QUAD", c(P+1, 1:P)))
-    rownames(problem$cones) <- c("type", "sub")
-
-    opts <- list()
-    opts$verbose <- 0
-
-    # optimization
-    result <- mosek(problem, opts)
-
     # update theta
     if (iter == 1) {
       theta0 <- theta
     } else {
       theta0 <- theta
-      theta <- result$sol$itr$xx[1:P]
+      theta <- sapply(1:P, function(m) WithinClusterSS(K = Km[,,m], H = H))
+      theta <- theta / sqrt(sum(theta * theta))
     }
     cat("iter ", iter, "... theta ", theta, "\n")
 
@@ -148,6 +128,7 @@ mkkcEst = function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-
   state$coefficients <- theta
   state$size <- table(state$cluster)
   state$iter <- iter
+  state$H <- H
 
   return(state)
 }

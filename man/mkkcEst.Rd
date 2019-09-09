@@ -35,6 +35,7 @@ mkkcEst(K, centers, iter.max = 10, A = NULL, bc = NULL,
   \item{tot.betweenss}{The between-cluster sum of squares, i.e. \code{totss-tot.withinss}.}
   \item{clustercount}{The number of clusters, say \code{k}.}
   \item{coefficients}{The kernel coefficients}
+  \item{H}{The continuous clustering assignment}
   \item{size}{The number of points, one component per cluster.}
   \item{iter}{The number of iterations.}
 }

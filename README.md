@@ -4,7 +4,7 @@ MKKC Package
 Overview
 ========
 
-The **MKKC** package performs multiple kernel *k*-means clustering on a multi-view data. The method is suggested by suggested by Bang and Wu (2018). The main function-`mkkc` efficiently and robustly utilizes complementary information collected from different sources and optimizes the kernel coefficients for different views in multiple kernel learning. This package also includes 18 multi-view simulation data generated for illustration purpose. We will give a short tutorial on using **MKKC** on the simulation data and assess how robustly it performs when noise and redundancy are present in the multi-view data.
+The **MKKC** package performs the robust multiple kernel *k*-means clustering using min-max optimization. The method is proposed by Bang and Wu (2018). The main function-`mkkc` performs a robust clustering on multi-view data collected from different sources. This package also includes 18 multi-view simulation data generated for illustration purpose. We will give a short tutorial on using **MKKC** on the simulation data and assess how robustly it performs when noise and redundancy are present in the multi-view data.
 
 Installation
 ============
@@ -13,10 +13,9 @@ Users can install the package from [github](https://github.com/SeojinBang) as fo
 
 ``` r
 install.packages("devtools")
+library(devtools)
 devtools::install_github("SeojinBang/MKKC")
 ```
-
-A recent version of *Rmosek* (&gt;= 8.0.46) is also required. See the [Rmosek installation instructions](http://docs.mosek.com/8.0/rmosek/install.html) for details on installing for your platform.
 
 Usage
 =====
@@ -24,7 +23,7 @@ Usage
 `mkkc` performs the multiple kernel K-means clustering on multi-view data. The usage is
 
 ``` r
-mkkc(K, centers, iter.max, A, bc, epsilon)
+mkkc(K, centers, iter.max, epsilon)
 ```
 
 where
@@ -32,11 +31,9 @@ where
 -   `K` is *N* × *N* × *P* array containing *P* kernel matrices with size *N* × *N*.
 -   `centers` is the number of clusters, say *k*.
 -   `iter.max` is the maximum number of iterations allowed. The default is 10.
--   `A` is *m* × *P* linear constraint matrix where P is the number of views and m is the number of constrints.
--   `bc` is 2 × *m* numeric matrix with the two rows representing the lower and upper constraint bounds.
 -   `epsilon` is a onvergence threshold. The default is 10<sup>−4</sup>.
 
-If there is no prior information to indicate relative importance of the views, one can perform the clustering analysis using the most basic call to `mkkc` without specifying `A` and `bc`:
+One can perform the clustering analysis using the most basic call to `mkkc`:
 
 ``` r
 mkkc(K, centers)
@@ -72,11 +69,11 @@ We first load the **MKKC** package:
 library(MKKC)
 ```
 
-In this example, we use a simulation data set `simBnoise` which is composed of two partial views. Each partial view only conveys partial information so that each view alone cannot completely detect the three clusters. The first view (View 1) is able to detect the first cluster but not able to identify the difference between the second and third cluster. The second view (View 2) is able to detect the third cluster but cannot identify the difference between the first and second cluster. Additionally, View 1 has 10 noise variables that have no information about the clusters, while we will use only 3 noise variables added to View 1.
+In this example, we use a simulation data set `simBnoise` which is composed of two partial views. Each partial view only conveys partial information so that each view alone cannot completely detect the three clusters. The first view (View 1) is able to detect the first cluster but not able to identify the difference between the second and third cluster. The second view (View 2) is able to detect the third cluster but cannot identify the difference between the first and second cluster. Additionally, View 1 has 10 noise variables that have no information about the clusters, while we will use only 2 noise variables added to View 1.
 
 ``` r
 truelabel <- simBnoise$true.label
-n.noise <- 3                                    # number of noises to be added
+n.noise <- 2                                    # number of noises to be added
 dat1 <- simBnoise$view1[,c(1:(2 + n.noise))]    # view 1
 dat2 <- simBnoise$view2                         # view 2
 ```
@@ -106,9 +103,7 @@ dat2 <- kernelMatrix(rbf, dat2)   # kernel matrix from View 2
 Construct Multi-view Data
 -------------------------
 
-Centering and scaling of kernel matrices in multi-view learning allow multiple views comparable with each other. Hence, we recommand to standardize the kernel matrices before combining them. Each kernel matrix is centered by
-**K** ← **K** – **J**<sub>*n*</sub>**K** – **K** **J**<sub>*n*</sub> + **J**<sub>*n*</sub>**K** **J**<sub>*n*</sub>
- and scaled by **K** ← *n***K**/tr(**K**) where **J**<sub>*n*</sub> = **1**<sub>*n*</sub>**1**<sub>*n*</sub><sup>*T*</sup>/*n* and *n* is the number of samples.
+Centering and scaling of kernel matrices in multi-view learning allow multiple views comparable with each other. Hence, we recommand to standardize the kernel matrices before combining them. Each kernel matrix is centered by **K** ← **K** – **J**<sub>*n*</sub>**K** – **K** **J**<sub>*n*</sub> + **J**<sub>*n*</sub>**K** **J**<sub>*n*</sub> and scaled by **K** ← *n***K**/tr(**K**) where **J**<sub>*n*</sub> = **1**<sub>*n*</sub>**1**<sub>*n*</sub><sup>*T*</sup>/*n* and *n* is the number of samples.
 
 We standardize the kernel matrices using a function `StandardizeKernel` provided by **MKKC**. With the standarized kernel matrices, we construct a multi-view data as a 300 × 300 × 2 array.
 
@@ -128,6 +123,14 @@ We perform the clustering using the most basic call to `mkkc`. It requires a mul
 res <- mkkc(K = K, centers = 3)
 ```
 
+    ## iter  1 ... theta  0.5 0.5 
+    ## iter  2 ... theta  0.9554583 0.295126 
+    ## iter  3 ... theta  0.9059099 0.4234705 
+    ## iter  4 ... theta  0.9140981 0.405493 
+    ## iter  5 ... theta  0.913377 0.4071147 
+    ## iter  6 ... theta  0.913442 0.4069689 
+    ## iter  7 ... theta  0.9134362 0.406982
+
 `res` is an object of class `MultipleKernelKmeans` which has a `print` and a `coef` method. We can obtain a vector of clustering labels by `res$cluster` and kernel coefficients of the two views by `coef(res)`.
 
 A comprehensive summary of the clustering is displayed with use of the print function:
@@ -137,38 +140,38 @@ print(res)
 ```
 
     ## 
-    ## Multiple kernel K-means clustering with 3 clusters of sizes  104, 96, 100 
+    ## Multiple kernel K-means clustering with 3 clusters of sizes  100, 103, 97 
     ## 
     ## Kernel coefficients of views:
-    ## [1] 0.9342697 0.3565671
+    ## [1] 0.9134362 0.4069820
     ## 
     ## Clustering vector:
-    ##   [1] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
-    ##  [36] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
-    ##  [71] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 1 1 1 1 1
-    ## [106] 1 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-    ## [141] 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 2 1 1
-    ## [176] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2
-    ## [211] 2 2 2 2 1 2 2 2 2 2 1 2 2 1 2 2 2 2 2 2 2 2 2 2 1 2 2 1 2 2 2 2 2 2 2
-    ## [246] 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 1 2 2 2 2 2 2 2 1 1 2 1 2 2 2 2 2 2
+    ##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+    ##  [36] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+    ##  [71] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 3 3 3 3
+    ## [106] 3 3 2 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+    ## [141] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+    ## [176] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 2 2 2 2 2 2 2 2 2
+    ## [211] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [246] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
     ## [281] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
     ## 
     ## Within cluster sum of squares by cluster:
     ##  cluster1  cluster2  cluster3 
-    ## 0.3437935 0.3158945 0.3279382 
-    ## (between_SS / total_SS =   23.5  %)
+    ## 0.3103318 0.3285893 0.2897978 
+    ## (between_SS / total_SS =   29.7  %)
     ## 
     ## Within cluster sum of squares by cluster for each view:
     ##        cluster1  cluster2  cluster3
-    ## view1 0.3291147 0.2917875 0.3068691
-    ## view2 0.1018366 0.1213974 0.1156576
+    ## view1 0.2882098 0.3045793 0.2710080
+    ## view2 0.1156576 0.1237784 0.1038114
     ## 
     ## Available components:
     ##  [1] "cluster"         "totss"           "withinss"       
     ##  [4] "withinsscluster" "withinssview"    "tot.withinss"   
     ##  [7] "betweenssview"   "tot.betweenss"   "clustercount"   
     ## [10] "coefficients"    "size"            "iter"           
-    ## [13] "call"
+    ## [13] "H"               "call"
 
 It displays kernel coefficients, clustering vector (clustering label assigned to the samples), within cluster sum of squares by cluster, and within cluster sum of squares by cluster for each view.
 
