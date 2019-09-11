@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Overview 
-The **MKKC** package performs the robust multiple kernel $k$-means clustering using min-max optimization. The method is proposed by @bang2018mkkc. The main function-`mkkc` performs a robust clustering on multi-view data collected from different sources. This package also includes 18 multi-view simulation data generated for illustration purpose. We will give a short tutorial on using **MKKC** on the simulation data and assess how robustly it performs when noise and redundancy are present in the multi-view data.
+The **MKKC** package performs the robust multiple kernel $k$-means clustering using min-max optimization. The method is proposed by @bang2019mkkc. The main function-`mkkc` performs a robust clustering on multi-view data collected from different sources. This package also includes 18 multi-view simulation data generated for illustration purpose. We will give a short tutorial on using **MKKC** on the simulation data and assess how robustly it performs when noise and redundancy are present in the multi-view data.
 
 # Installation
 Users can install the package from [github](https://github.com/SeojinBang) as follows:

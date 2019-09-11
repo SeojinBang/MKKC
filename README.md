@@ -4,7 +4,7 @@ MKKC Package
 Overview
 ========
 
-The **MKKC** package performs the robust multiple kernel *k*-means clustering using min-max optimization. The method is proposed by Bang and Wu (2018). The main function-`mkkc` performs a robust clustering on multi-view data collected from different sources. This package also includes 18 multi-view simulation data generated for illustration purpose. We will give a short tutorial on using **MKKC** on the simulation data and assess how robustly it performs when noise and redundancy are present in the multi-view data.
+The **MKKC** package performs the robust multiple kernel *k*-means clustering using min-max optimization. The method is proposed by Bang, Yu, and Wu (2019). The main function-`mkkc` performs a robust clustering on multi-view data collected from different sources. This package also includes 18 multi-view simulation data generated for illustration purpose. We will give a short tutorial on using **MKKC** on the simulation data and assess how robustly it performs when noise and redundancy are present in the multi-view data.
 
 Installation
 ============
@@ -140,31 +140,31 @@ print(res)
 ```
 
     ## 
-    ## Multiple kernel K-means clustering with 3 clusters of sizes  100, 103, 97 
+    ## Multiple kernel K-means clustering with 3 clusters of sizes  103, 97, 100 
     ## 
     ## Kernel coefficients of views:
     ## [1] 0.9134362 0.4069820
     ## 
     ## Clustering vector:
-    ##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-    ##  [36] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-    ##  [71] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 3 3 3 3
-    ## [106] 3 3 2 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
-    ## [141] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
-    ## [176] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 2 2 2 2 2 2 2 2 2
-    ## [211] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
-    ## [246] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
-    ## [281] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ##   [1] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+    ##  [36] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+    ##  [71] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 1 2 2 2 2
+    ## [106] 2 2 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [141] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    ## [176] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1
+    ## [211] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+    ## [246] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+    ## [281] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
     ## 
     ## Within cluster sum of squares by cluster:
     ##  cluster1  cluster2  cluster3 
-    ## 0.3103318 0.3285893 0.2897978 
+    ## 0.3285893 0.2897978 0.3103318 
     ## (between_SS / total_SS =   29.7  %)
     ## 
     ## Within cluster sum of squares by cluster for each view:
     ##        cluster1  cluster2  cluster3
-    ## view1 0.2882098 0.3045793 0.2710080
-    ## view2 0.1156576 0.1237784 0.1038114
+    ## view1 0.3045793 0.2710080 0.2882098
+    ## view2 0.1237784 0.1038114 0.1156576
     ## 
     ## Available components:
     ##  [1] "cluster"         "totss"           "withinss"       
@@ -183,4 +183,4 @@ The **MKKC** package is licensed under the GPL-3 (<http://www.gnu.org/licenses/g
 References
 ==========
 
-Bang, Seojin, and Wei Wu. 2018. “Multiple Kernel K-Means Clustering Using Min-Max Optimization with L2 Regularization.” *ArXiv Preprint ArXiv:1803.02458v1*.
+Bang, Seojin, Yaoliang Yu, and Wei Wu. 2019. “Robust Multiple Kernel K-Means Clustering Using Min-Max Optimization.” *ArXiv Preprint ArXiv:1803.02458*.
