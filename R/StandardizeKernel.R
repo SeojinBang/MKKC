@@ -1,5 +1,5 @@
 # Part of MKKC package
-# (c) 2018 by Seo-Jin Bang, Wei Wu, and Carnegie Mellon University
+# (c) 2018 by Seojin Bang
 # See LICENSE for licensing.
 
 #' @title Standardize a Kernel Matrix

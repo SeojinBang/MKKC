@@ -1,12 +1,12 @@
 # Part of MKKC package
-# (c) 2018 by Seo-Jin Bang, Wei Wu, and Carnegie Mellon University
+# (c) 2018 by Seojin Bang
 # See LICENSE for licensing.
 
 #' @title Multiple Kernel K-means Clustering
 #'
 #' @name mkkc
 #' @aliases MultipleKernelKmeans.default
-#' @description Performs multiple kernel K-means clustering on a multi-view data.
+#' @description Performs multiple kernel K-means clustering on a multiview data.
 #' @param K \eqn{N x N x P} array containing \eqn{P} kernel matrices with size \eqn{N x N}.
 #' @param centers The number of clusters, say \eqn{k}.
 #' @param iter.max The maximum number of iterations allowed. The default is 10.
@@ -15,7 +15,7 @@
 #' @param x Object of class inheriting from \code{mkkc}.
 #' @param ... Additional arguments passed to \code{print}.
 #' @export
-#' @import assertthat Rmosek
+#' @import assertthat
 #' @importFrom Matrix Matrix
 #' @importFrom stats kmeans
 #' @details The optimization problem is described with an array of the multiple
@@ -37,7 +37,7 @@
 #' constructed ahead of the algorithm. We recommend to normalized the kernels using
 #' \code{\link{StandardizeKernel}} which makes the multiple views are comparable to each
 #' other.
-#' @references \insertRef{bang2018mkkc}{MKKC}
+#' @references \insertRef{bang2019mkkc}{MKKC}
 #' @keywords \code{\link[stats]{kmeans}}
 #' @return \code{mkkc} returns an object of class "\code{MultipleKernelKmeans}" which has a \code{print} and a \code{coef} method. It is a list with at least the following components:
 #' \describe{
@@ -80,34 +80,12 @@
 #' coef(res) # kernel coefficients of the three views
 #' res$cluster
 #'
-#' # perfom multiple kernel k-means with constraint (2 * theta3 <= theta1 and theta3 <= theta 2)
-#' require(Matrix)
-#' myA <- Matrix(c(1, 0, -2,
-#'                 0, 1, -1), ncol = 3, byrow = TRUE, sparse = TRUE)
-#' mybc <- rbind(blc = c(0, 0), buc =  c(Inf, Inf))
-#' res <- mkkc(K = K, centers = 3, A = myA, bc = mybc)
-#'
-#' coef(res) # kernel coefficients of the three views
-#' res$cluster
-mkkc <- function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04, theta = rep(1/dim(K)[3], dim(K)[3])) UseMethod("MultipleKernelKmeans")
+mkkc <- function(K, centers, iter.max = 10, epsilon = 1e-04, theta = rep(1/dim(K)[3], dim(K)[3])) UseMethod("MultipleKernelKmeans")
 
 #' @export
-MultipleKernelKmeans.default <- function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04, theta = rep(1/dim(K)[3], dim(K)[3])) {
+MultipleKernelKmeans.default <- function(K, centers, iter.max = 10, epsilon = 1e-04, theta = rep(1/dim(K)[3], dim(K)[3])) {
 
-  assert_that(is.null(A) == is.null(bc), msg = "both A and bc should be assigned.")
-
-  if (is.null(A) & is.null(bc)) {
-    myA <- A
-  } else {
-    P <- dim(K)[3]
-    assert_that(P == ncol(A), msg = "the number of columns of A should be the same as the number of views.")
-    assert_that(nrow(A) == ncol(bc), msg = "the number of rows of A should be the same as the number of columns of bc.")
-    assert_that(is.matrix(bc) & is.numeric(bc) & nrow(bc) == 2, msg = "bc shuold be a numeric matrix with 2 rows")
-    myA <- Matrix(0, ncol = P+1, nrow = nrow(A), byrow = T, sparse = TRUE)
-    myA[,1:P] <- A
-  }
-
-  state <- mkkcEst(K = K, centers = centers, iter.max = iter.max, A = myA, bc = bc, epsilon = epsilon, theta = theta)
+  state <- mkkcEst(K = K, centers = centers, iter.max = iter.max, epsilon = epsilon, theta = theta)
   state$call <- match.call()
 
   class(state) <- "MultipleKernelKmeans"

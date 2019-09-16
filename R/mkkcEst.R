@@ -1,16 +1,14 @@
 # Part of MKKC package
-# (c) 2018 by Seo-Jin Bang, Wei Wu, and Carnegie Mellon University
+# (c) 2018 by Seojin Bang
 # See LICENSE for licensing.
 
 #' An internal function called \code{mkkcEst}.
 #'
-#' It performs multiple kernel K-means clustering on a multi-view data.
+#' It performs robust multiple kernel K-means clustering on a multiview data.
 #'
 #' @param K \eqn{N x N x P} array containing \eqn{P} kernel matrices with size \eqn{N x N}.
 #' @param centers The number of clusters, say \eqn{k}.
 #' @param iter.max The maximum number of iterations allowed. The default is 10.
-#' @param A Linear constraint matrix.
-#' @param bc Lower and upper constraint bounds.
 #' @param epsilon Convergence threshold. The default is \eqn{10^{-4}}.
 #' @param theta intial values for kernel coefficients. The default is 1/P for all views.
 #' @return \code{mkkcEst} returns the following components:
@@ -30,10 +28,10 @@
 #'   \item{iter}{The number of iterations.}
 #' }
 #' @keywords internal
-#' @import assertthat Rmosek
+#' @import assertthat
 #' @importFrom Matrix Matrix
 #' @importFrom stats kmeans
-mkkcEst = function(K, centers, iter.max = 10, A = NULL, bc = NULL, epsilon = 1e-04, theta = rep(1/dim(K)[3], dim(K)[3])) {
+mkkcEst = function(K, centers, iter.max = 10, epsilon = 1e-04, theta = rep(1/dim(K)[3], dim(K)[3])) {
 
   assert_that(centers > 0, msg = "the number of cluster should be an integer larger than 0.")
   assert_that(round(centers) == centers, msg = "the number of cluster should be an integer larger than 1.")
